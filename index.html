@@ -24,7 +24,6 @@
   <link rel="preload" as="image" href="profile.png">
 
   <style>
-    /* your existing styles unchanged */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: Arial, sans-serif; text-align: center; background-color: #f0f0f0; min-height: 100vh; color: #fff; font-size: 14px; }
     .background { width: 100%; min-height: 100vh; background-image: url('background.png'); background-size: cover; background-position: center; display: flex; flex-direction: column; align-items: center; padding-bottom: 50px; }
@@ -63,11 +62,9 @@
   </div>
 
   <script>
-    // your original dynamic text code
+    // Dynamic text content
     document.getElementById("siteName").innerText = "Join the New Mentorship Program";
-
-    document.getElementById("headline").innerText =
-      "Access exclusive trading insights, see available trades, and connect with real traders ready to help you hit your first 100x.";
+    document.getElementById("headline").innerText = "Access exclusive trading insights, see available trades, and connect with real traders ready to help you hit your first 100x.";
 
     document.getElementById("featuresTitle").innerText = "Features";
 
@@ -86,26 +83,25 @@
       listEl.appendChild(li);
     });
 
-    // NEW Telegram button click handler (Option A)
+    // Telegram button click handler (hidden link via Netlify function)
     const btn = document.getElementById("telegram-btn");
     btn.addEventListener("click", async function (e) {
       e.preventDefault();
-      btn.innerText = "Opening…";
-      btn.disabled = true;
+      btn.disabled = true; // disable while processing
 
       try {
-        const res = await fetch("/.netlify/functions/getTelegram");
+        const res = await fetch("/telegram"); // call Netlify function
         if (!res.ok) throw new Error("Server error");
+
         const json = await res.json();
         if (!json.token) throw new Error("No token");
 
         const url = atob(json.token); // decode Base64
-        window.location.href = url;
+        window.location.href = url;    // redirect immediately
       } catch (err) {
         console.error(err);
         alert("Unable to open link right now.");
-        btn.innerText = "Join for free";
-        btn.disabled = false;
+        btn.disabled = false; // re-enable on error
       }
     });
   </script>
